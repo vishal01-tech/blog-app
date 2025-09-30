@@ -94,11 +94,6 @@ const SignUp = () => {
   };
 
   return (
-    <div className="signup-container">
-      <div className="signup-img">
-        <img src="./images/image.png" alt="Signup visual" />
-      </div>
-
       <div className="signup-form">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit} noValidate>
@@ -160,7 +155,6 @@ const SignUp = () => {
           </p>
         </form>
       </div>
-    </div>
   );
 };
 

@@ -1,0 +1,95 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+  background-color: aliceblue;
+  height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 100px 60px 40px 60px;
+  max-width: 400px;
+}
+
+.signup-form h2 {
+  font-size: 2.5rem;
+  background: linear-gradient(to right, #6a4cfc, #6129e2);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 30px;
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.form-group label {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-top: 20px;
+  background: linear-gradient(to right, #6a4cfc, #6129e2);
+  -webkit-background-clip: text;
+  color: transparent;
+  span{
+    color: red;
+  }
+}
+
+.form-group input {
+  padding: 10px 12px;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 12px;
+  color: white;
+}
+
+
+.error {
+    display: block;
+    position: absolute;
+    color: red;
+    font-size: 1.1rem;
+    margin-top: 100px;
+}
+
+
+.btn {
+  margin-top: 50px;
+}
+
+.btn button {
+  color: white;
+  width: 100%;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  transition: background 0.3s ease;
+}
+
+.btn button:hover {
+  background-color: #333;
+}
+
+.forgot-button {
+  margin-top: 15px;
+  font-size: 1.3rem;
+  color: #6a4cfc;
+  text-decoration: none;
+}
+p{
+    color: black;
+}

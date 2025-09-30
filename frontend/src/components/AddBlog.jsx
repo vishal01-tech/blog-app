@@ -149,16 +149,22 @@ const BlogPage = () => {
         </form>
 
         <div className="blogs-list">
-          <h3>Latest Blogs</h3>
+          <h3>Your Blogs</h3>
           {blogs.length > 0 ? (
             blogs.map((blog) => (
               <div key={blog.id} className="blog-card">
+                {console.log(blog.image)}
                 {blog.image && <img src={blog.image} alt="Blog" />}
-                <p><strong>Title :{ blog.title}</strong></p>
                 <p>
-                  <strong>Author:</strong> {blog.author}
+                  <strong>Title: </strong>
+                  {blog.title}
                 </p>
-                <p>{blog.content}</p>
+                <p>
+                  <strong>Author: </strong> {blog.author}
+                </p>
+                <p>
+                  <strong>Content: </strong> {blog.content}
+                </p>
                 <div className="blog-actions">
                   <button onClick={() => handleEdit(blog)}>Edit</button>
                   <button onClick={() => handleDelete(blog.id)}>Delete</button>
