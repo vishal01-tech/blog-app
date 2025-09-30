@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "../styles/BlogPage.css";
 import Navbar from "./NavBar";
 
-
 const API_URL = "http://localhost:8000/posts";
 
 const BlogPage = () => {
@@ -14,8 +13,11 @@ const BlogPage = () => {
     image: "",
   });
   const [editId, setEditId] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
+    const username = localStorage.getItem("username");
+    setCurrentUser(username);
     fetchBlogs();
   }, []);
 
@@ -32,12 +34,17 @@ const BlogPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { title, content, author, image } = formData;
+    const { title, content, image } = formData;
+    const author = currentUser || formData.author;
+    const token = localStorage.getItem("access_token");
 
     try {
       const response = await fetch(editId ? `${API_URL}/${editId}` : API_URL, {
         method: editId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
         body: JSON.stringify({ title, content, author, image }),
       });
 
@@ -51,16 +58,21 @@ const BlogPage = () => {
   };
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem("access_token");
     try {
-      const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
       if (!response.ok) throw new Error("Failed to delete blog");
 
       await fetchBlogs();
     } catch (error) {
       console.error("Error deleting blog:", error);
     }
-  };
-
+  }
   const handleEdit = (blog) => {
     setFormData({
       title: blog.title,
@@ -106,13 +118,14 @@ const BlogPage = () => {
             />
           </div>
 
+          {/* Author field hidden or disabled since author is current user */}
           <div className="form-group">
             <label htmlFor="author">Author:</label>
             <input
               type="text"
               id="author"
-              value={formData.author}
-              onChange={handleChange}
+              // value={currentUser || formData.author}
+              // disabled
               placeholder="Author name"
               required
             />
@@ -153,7 +166,6 @@ const BlogPage = () => {
           {blogs.length > 0 ? (
             blogs.map((blog) => (
               <div key={blog.id} className="blog-card">
-                {console.log(blog.image)}
                 {blog.image && <img src={blog.image} alt="Blog" />}
                 <p>
                   <strong>Title: </strong>
@@ -166,8 +178,12 @@ const BlogPage = () => {
                   <strong>Content: </strong> {blog.content}
                 </p>
                 <div className="blog-actions">
-                  <button onClick={() => handleEdit(blog)}>Edit</button>
-                  <button onClick={() => handleDelete(blog.id)}>Delete</button>
+                  {currentUser === blog.author && (
+                    <>
+                      <button onClick={() => handleEdit(blog)}>Edit</button>
+                      <button onClick={() => handleDelete(blog.id)}>Delete</button>
+                    </>
+                  )}
                 </div>
               </div>
             ))

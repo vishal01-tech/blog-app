@@ -76,6 +76,8 @@ const Login = () => {
 
       const data = await response.json();
       localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("username", data.username);
+      localStorage.setItem("email", data.email);
       navigate("/Home");
     } catch (error) {
       console.error("Login failed:", error);

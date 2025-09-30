@@ -3,8 +3,11 @@ from app.models.posts import Post
 from app.schemas.posts import PostCreate, PostUpdate
 
 
-def create_post(db: Session, post_data: PostCreate) -> Post:
-    new_post = Post(**post_data.dict())
+def create_post(db: Session, post_data: PostCreate, author_id: int = None) -> Post:
+    post_dict = post_data.dict()
+    if author_id:
+        post_dict['author_id'] = author_id
+    new_post = Post(**post_dict)
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
