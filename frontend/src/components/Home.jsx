@@ -1,7 +1,9 @@
-// src/components/Home.jsx
+
 import React from "react";
 import "../styles/Home.css";
 import Navbar from "./NavBar";
+
+
 
 function Home() {
   return (

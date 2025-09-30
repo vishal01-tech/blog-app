@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "../styles/BlogPage.css"; // You can reuse this
+import "../styles/Blog.css"; 
 import Navbar from "./NavBar";
-
-// const API_URL = "http://localhost:8000/posts";
 
 const BlogListPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -26,17 +24,19 @@ const BlogListPage = () => {
     <>
       <Navbar />
       <div className="blog-container">
-        <h2>Latest Blogs</h2>
+        <h2>All Blogs</h2>
         <div className="blogs-list">
           {blogs.length > 0 ? (
             blogs.map((blog) => (
               <div key={blog.id} className="blog-card">
                 {blog.image && <img src={blog.image} alt="Blog" />}
-                <h4>{blog.title}</h4>
+                <p>
+                  <strong>Title:</strong> {blog.title}
+                </p>
                 <p>
                   <strong>Author:</strong> {blog.author}
                 </p>
-                <p>{blog.content}</p>
+                <p> <strong>Content:</strong> {blog.content}</p>
               </div>
             ))
           ) : (

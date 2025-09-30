@@ -1,11 +1,9 @@
 import React from "react";
-import Navbar from "./NavBar";
 import "../styles/AboutPage.css";
 
 const AboutPage = () => {
   return (
     <>
-      <Navbar />
       <div className="about-container">
         <h2>About This Page</h2>
         <p>

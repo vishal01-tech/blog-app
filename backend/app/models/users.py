@@ -9,6 +9,6 @@ class User(Base):
     username = Column(String(50), unique=True, index=True, nullable=False)  
     email = Column(String(100), unique=True, index=True, nullable=False)
     password = Column(String, nullable=False)  
-    otp = Column(Integer,nullable=False)                         
+    # otp = Column(Integer,nullable=False)                         
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)

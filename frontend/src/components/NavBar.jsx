@@ -9,9 +9,6 @@ const Navbar = () => {
       <a href="/blog">Blog</a>
       <a href="/BlogPage">Add Blog</a>
       <a href="/categories">Categories</a>
-      <a href="/About">About</a>
-      <input type="search" placeholder="Search" />
-      <button>Search</button>
       <a href="/">LogOut</a>
     </nav>
   );

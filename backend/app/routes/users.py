@@ -37,13 +37,13 @@ def signup(user_signup: UserSignUp, db: Session = Depends(get_db)):
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    # Hash the password before saving it
+    # Hash the password 
     hashed_password = hash_password(user_signup.password)
 
     # Create a new user
     new_user = create_user(db, user_signup.username, user_signup.email, hashed_password)
 
-    # Create JWT token for the newly registered user
+    # Create JWT token for new user
     token_data = {"sub": new_user.email}
     access_token = create_access_token(data=token_data, time_delta=timedelta(minutes=30))
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/BlogPage.css";
 import Navbar from "./NavBar";
 
+
 const API_URL = "http://localhost:8000/posts";
 
 const BlogPage = () => {
