@@ -1,15 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import router as user_router  # User routes
-from app.routes.posts import router as blog_router 
-# FastAPI dependency to get current user
-# from fastapi import Depends, HTTPException, status
-# from sqlalchemy.orm import Session
-# from app.core.database import get_db
-# from app.crud.users import get_user_by_email
-from fastapi.security import OAuth2PasswordBearer
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login") # Blog routes
+from fastapi.staticfiles import StaticFiles
+from .routes import router as user_router
+from .routes.posts import router as blog_router
 
 app = FastAPI()
 
@@ -17,6 +10,7 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "http://localhost:5173",
+    "http://localhost:5174",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -25,6 +19,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Static files serving for uploaded images
+app.mount("/static", StaticFiles(directory="backend/app/static"), name="static")
 
 # Include routes
 app.include_router(user_router)

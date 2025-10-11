@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from app.core.database import get_db
-from app.schemas.users import UserLogin, TokenResponse, UserSignUp
-from app.utils.auth import verify_password, create_access_token, hash_password
+from app.schemas.users import UserLogin, TokenResponse, UserSignUp, ForgotPasswordRequest, VerifyOtpRequest, ResetPasswordRequest
+from app.utils.auth import verify_password, create_access_token, hash_password, send_otp_email
 from datetime import timedelta
-from app.crud.users import get_user_by_email, create_user  # Import CRUD functions
+from app.crud.users import get_user_by_email, create_user, generate_otp, set_user_otp, verify_user_otp
 
 router = APIRouter()
 
@@ -53,3 +53,39 @@ def signup(user_signup: UserSignUp, db: Session = Depends(get_db)):
         "email": new_user.email,
         "username": new_user.username
     }
+
+# Forgot Password - send OTP
+@router.post("/forgot-password")
+def forgot_password(request: ForgotPasswordRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+    user = get_user_by_email(db, request.email)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    otp = generate_otp()
+    set_user_otp(db, user, otp)
+    background_tasks.add_task(send_otp_email, user.email, otp)
+    return {"detail": "OTP sent to registered email"}
+
+# Verify OTP
+@router.post("/verify-otp")
+def verify_otp(request: VerifyOtpRequest, db: Session = Depends(get_db)):
+    user = get_user_by_email(db, request.email)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if not verify_user_otp(db, user, request.otp):
+        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
+    return {"detail": "OTP verified"}
+
+# Reset Password
+@router.post("/reset-password")
+def reset_password(request: ResetPasswordRequest, db: Session = Depends(get_db)):
+    user = get_user_by_email(db, request.email)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if not verify_user_otp(db, user, request.otp):
+        raise HTTPException(status_code=400, detail="Invalid or expired OTP")
+    hashed_password = hash_password(request.new_password)
+    user.password = hashed_password
+    user.otp = None
+    user.otp_expiry = None
+    db.commit()
+    return {"detail": "Password reset successful"}

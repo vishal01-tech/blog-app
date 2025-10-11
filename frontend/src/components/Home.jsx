@@ -1,13 +1,12 @@
-import React from "react";
-import "../styles/Home.css";
+import "../assets/styles/Home.css"
 import Navbar from "./NavBar";
-
-
+import AboutPage from "./About";
 
 function Home() {
   return (
     <>
       <Navbar/>
+      
       <div className="main-container">
         <h2>Discovering Amazing</h2>
         <br />
@@ -79,6 +78,10 @@ function Home() {
       <div className="third-container">
         <h2>Latest Articles</h2>
         <p>Stay up to date with our newest content and insights.</p>
+        
+      </div>
+      <div className="footer">
+        <AboutPage/>
       </div>
     </>
   );

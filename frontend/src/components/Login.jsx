@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../styles/Login.css";
+import "../assets/styles/Login.css";
+import { BACKEND_URL } from '../config';
+import { toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Navbar from "./NavBar";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+
+  const [redirecting, setRedirecting] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      setRedirecting(true);
+      navigate("/");
+    }
+  }, [navigate]);
+
+  if (redirecting) {
+    return <p>Redirecting...</p>;
+  }
 
   // Validation logic
   const validateField = (value, field) => {
@@ -59,7 +77,7 @@ const Login = () => {
     if (emailError || passwordError) return;
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/login", {
+      const response = await fetch(`${BACKEND_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,6 +87,14 @@ const Login = () => {
 
       if (!response.ok) {
         if (response.status === 401) {
+          const errorData = await response.json();
+          if (errorData.detail === "Invalid email") {
+            toast.error("Email is wrong");
+          } else if (errorData.detail === "Invalid password") {
+            toast.error("Password is wrong");
+          } else {
+            toast.error("Invalid credentials");
+          }
           setErrors((prev) => ({ ...prev, email: "Invalid credentials" }));
         }
         return;
@@ -78,23 +104,17 @@ const Login = () => {
       localStorage.setItem("access_token", data.access_token);
       localStorage.setItem("username", data.username);
       localStorage.setItem("email", data.email);
-      navigate("/Home");
+      toast.success("Login successful");
+      navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
+      toast.error("Login failed. Please try again.");
     }
   };
 
   return (
     <>
-      <nav className="nav">
-        <h3>BlogApp</h3>
-        <div className="sign-up">
-          <p>
-            Don't have an account? <Link to="/signup">Sign Up</Link>
-          </p>
-        </div>
-      </nav>
-
+     <Navbar/>
       <div className="login-container">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
@@ -134,7 +154,7 @@ const Login = () => {
             )}
           </div>
 
-          <div className="btn">
+          <div className="logout-btn">
             <button type="submit">Log In</button>
           </div>
 

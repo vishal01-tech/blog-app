@@ -1,0 +1,130 @@
+/* Reset and base styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+  background-color: aliceblue;
+  height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Navbar */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 10px 40px;
+  border-radius: 15px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.nav h3 {
+  background: linear-gradient(to right, #6a4cfc, #5c2acf);
+  -webkit-background-clip: text;
+  background-clip: none;
+  color: transparent;
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+.sign-up {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  color: #333;
+}
+
+.sign-up a {
+  color: #6a4cfc;
+  text-decoration: none;
+}
+
+/* Login container */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 100px 60px 40px 60px;
+  max-width: 400px;
+}
+
+.login-container h2 {
+  font-size: 2.5rem;
+  background: linear-gradient(to right, #6a4cfc, #6129e2);
+  -webkit-background-clip: text;
+  background-clip: none;
+  color: transparent;
+  margin-bottom: 30px;
+}
+
+/* Input group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.input-group label {
+  font-size: 1.3rem;
+  font-weight: bold;
+  background: linear-gradient(to right, #6a4cfc, #6129e2);
+  -webkit-background-clip: text;
+  background-clip: none;
+  color: transparent;
+  margin-top: 10px;
+  span{
+    color: red;
+  }
+}
+
+.input-group input {
+  padding: 10px 12px;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 12px;
+  color: white;
+}
+
+
+.error-message {
+    display: block;
+    position: absolute;
+    color: red;
+    font-size: 1.1rem;
+    margin-top: 80px;
+}
+
+
+.logout-btn {
+  margin-top: 50px;
+}
+
+.logout-btn button {
+  color: white;
+  width: 100%;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  transition: background 0.3s ease;
+}
+
+.logout-btn button:hover {
+  background-color: #333;
+}
+
+.forgot-button {
+  margin-top: 15px;
+  font-size: 1.3rem;
+  color: #6a4cfc;
+  text-decoration: none;
+}
